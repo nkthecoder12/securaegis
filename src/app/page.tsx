@@ -22,7 +22,7 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-5xl md:text-7xl font-extrabold tracking-tight text-white mb-6"
             >
-              Secure Your Future with <span className="text-primary text-glow">Industry-Leading</span> Cyber Security Training
+              Secure Your Future with <span className="text-primary text-glow">Industry Leading</span> Cyber Security Training
             </motion.h1>
 
             <motion.p
@@ -31,7 +31,7 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-lg md:text-xl text-gray-400 mb-10 max-w-3xl mx-auto"
             >
-              Master Ethical Hacking, Network Security, Programming, and Cloud Technologies from Industry Experts. Get certified, practice in real labs, and launch your premium career.
+              Master Ethical Hacking, Network Security, Programming and Cloud Technologies from Industry Experts. Get certified, practice in real labs and launch your premium career.
             </motion.p>
 
             <motion.div
