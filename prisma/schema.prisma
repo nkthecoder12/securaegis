@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          Role      @default(STUDENT)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  enrollments   Enrollment[]
+  payments      Payment[]
+  certificates  Certificate[]
+}
+
+model Course {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  description String
+  level       String
+  duration    String
+  fees        Float
+  image       String?
+  trainerId   String?
+  published   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  trainer     Trainer?  @relation(fields: [trainerId], references: [id])
+  modules     CourseModule[]
+  enrollments Enrollment[]
+}
+
+model CourseModule {
+  id          String   @id @default(cuid())
+  courseId    String
+  title       String
+  content     String?
+  order       Int      @default(0)
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
+
+model Enrollment {
+  id          String   @id @default(cuid())
+  userId      String
+  courseId    String
+  progress    Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, courseId])
+}
+
+model Payment {
+  id            String   @id @default(cuid())
+  userId        String
+  amount        Float
+  currency      String   @default("INR")
+  status        String
+  transactionId String?
+  createdAt     DateTime @default(now())
+
+  user          User     @relation(fields: [userId], references: [id])
+}
+
+model Certificate {
+  id          String   @id @default(cuid())
+  userId      String
+  courseName  String
+  issuedAt    DateTime @default(now())
+  fileUrl     String
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Trainer {
+  id          String   @id @default(cuid())
+  name        String
+  bio         String?
+  image       String?
+  linkedinUrl String?
+  courses     Course[]
+}
+
+model Blog {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  content     String
+  image       String?
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
